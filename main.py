@@ -10,19 +10,24 @@ EXCUSE = "My map has marked that corner 'here be dragons.' I do not clean dragon
 MAX_CHARS = 140
 
 
+def validate_excuse(excuse: str) -> None:
+    """Raise SystemExit if *excuse* breaks any entry rule."""
+    if not excuse:
+        raise SystemExit("error: excuse is empty")
+    if "\n" in excuse or "\r" in excuse:
+        raise SystemExit("error: excuse must be a single line")
+    if len(excuse) > MAX_CHARS:
+        raise SystemExit(
+            f"error: excuse is {len(excuse)} characters; expected {MAX_CHARS} or fewer"
+        )
+    if excuse != excuse.strip():
+        raise SystemExit("error: excuse must not have leading or trailing whitespace")
+
+
 def main() -> None:
     import os
 
-    if not EXCUSE:
-        raise SystemExit("error: excuse is empty")
-    if "\n" in EXCUSE or "\r" in EXCUSE:
-        raise SystemExit("error: excuse must be a single line")
-    if len(EXCUSE) > MAX_CHARS:
-        raise SystemExit(
-            f"error: excuse is {len(EXCUSE)} characters; expected {MAX_CHARS} or fewer"
-        )
-    if EXCUSE != EXCUSE.strip():
-        raise SystemExit("error: excuse must not have leading or trailing whitespace")
+    validate_excuse(EXCUSE)
 
     print(EXCUSE)
 
